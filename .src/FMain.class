@@ -1,0 +1,16 @@
+' Gambas class file
+
+Public TempMapa As Mapa
+
+Public Sub Form_Open()
+
+  TempMapa = New Mapa(Me)
+  Timer1.Start()
+
+End
+
+Public Sub Timer1_Timer()
+
+  TempMapa = New Mapa(Me)
+
+End

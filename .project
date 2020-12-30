@@ -1,0 +1,12 @@
+# Gambas Project File 3.0
+Title=generadormapa
+Startup=FMain
+Icon=PNG/Default size/tileGrass_roadCornerLR.png
+Version=0.0.2
+Component=gb.image
+Component=gb.gui
+Component=gb.form
+TabSize=2
+Language=en_US
+SourcePath=/home/minino/Documentos/gambas/00 jsbsan
+Packager=1

@@ -1,0 +1,14 @@
+' Gambas class file
+
+Public nombre As String 'fichero de nombre del terreno
+
+Public arriba As Integer ' 0,0,0,0 -> sin caminos
+Public derecha As Integer
+Public abajo As Integer
+Public izquierda As Integer
+
+Public Function totalcaminos() As Integer 'metodo de ejemplo
+
+  Return arriba + derecha + abajo + izquierda
+
+End

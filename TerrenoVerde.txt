@@ -1,0 +1,14 @@
+PNG/Default size/tileGrass1.png,0,0,0,0
+PNG/Default size/tileGrass2.png,0,0,0,0
+PNG/Default size/tileGrass_roadCornerLL.png,0,0,1,1
+PNG/Default size/tileGrass_roadCornerLR.png,0,1,1,0
+PNG/Default size/tileGrass_roadCornerUL.png,1,0,0,1
+PNG/Default size/tileGrass_roadCornerUR.png,1,1,0,0
+PNG/Default size/tileGrass_roadCrossing.png,1,1,1,1
+PNG/Default size/tileGrass_roadCrossingRound.png,1,1,1,1
+PNG/Default size/tileGrass_roadEast.png,0,1,0,1
+PNG/Default size/tileGrass_roadNorth.png,1,0,1,0
+PNG/Default size/tileGrass_roadSplitE.png,1,1,1,0
+PNG/Default size/tileGrass_roadSplitN.png,1,1,0,1
+PNG/Default size/tileGrass_roadSplitS.png,0,1,1,1
+PNG/Default size/tileGrass_roadSplitW.png,1,0,1,1

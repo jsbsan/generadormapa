@@ -1,0 +1,151 @@
+' Gambas class file
+
+Public FicheroDeDatos As String = "TerrenoVerde.txt"
+
+Private mapa As New String[30, 30] 'contiene el nombre de title de cada celda del mapa de 30x30
+Private ListaTitleDisponibles As Title[]
+
+Public Sub _new(formulario As Form, Optional fichero As String)
+
+  If IsNull(fichero) Then
+    FicheroDeDatos = "TerrenoVerde.txt"
+  Else
+    FicheroDeDatos = fichero
+  Endif
+
+  creaMapa(formulario)
+
+End
+
+Public Sub creaMapa(formulario As Form)
+
+  Dim x, y As Integer
+  Dim p As PictureBox
+  Dim arriba, derecha, abajo, izquierda As String = Null
+  Dim GeneradoTitle As Title
+
+  Randomize
+  mapa = New String[30, 30]
+  ListaTitleDisponibles = generarlistadisponible()
+  For y = 0 To Round(formulario.H / 64, 0) - 1
+    For x = 0 To Round(formulario.w / 64, 0) - 1
+
+      p = New PictureBox(formulario)
+
+      p.w = 64
+      p.h = 64
+
+      p.x = x * 64
+      p.y = y * 64
+
+      arriba = Null
+      abajo = Null
+      izquierda = Null
+      derecha = Null
+
+      If y - 1 > -1 Then arriba = mapa[x, y - 1]
+      If x - 1 > -1 Then izquierda = mapa[x - 1, y]
+
+      derecha = mapa[x + 1, y]
+      abajo = mapa[x, y + 1]
+      GeneradoTitle = AsignaTerreno(arriba, derecha, abajo, izquierda)
+
+      If Not IsNull(GeneradoTitle) Then
+        mapa[x, y] = GeneradoTitle.nombre
+        p.Picture = Picture[GeneradoTitle.nombre]
+        p.Border = 1
+        p.Tooltip = "[" & GeneradoTitle.arriba & "," & GeneradoTitle.derecha & "," & GeneradoTitle.abajo & "," & GeneradoTitle.izquierda & "]"
+      Endif
+      '  p.Border = Border.Raised
+
+    Next
+  Next
+
+End
+
+Private Function generarlistadisponible() As Title[]
+
+  Dim dato As New Title
+  Dim contenido As String
+  Dim lineas As String[]
+  Dim l As String
+  Dim lista As New Title[]
+  Dim token As String[]
+
+  contenido = File.load(FicheroDeDatos)
+  lineas = Split(contenido, "\n")
+
+  For Each l In lineas
+    token = Split(l, ",")
+    dato.nombre = token[0]
+    dato.arriba = token[1]
+    dato.derecha = token[2]
+    dato.abajo = token[3]
+    dato.izquierda = token[4]
+    lista.Add(dato)
+    dato = New Title
+  Next
+
+  Return lista
+
+End
+
+Private Sub buscalista(nombre As String) As Title
+
+  Dim t As Title
+
+  For Each t In ListaTitleDisponibles
+    If t.nombre = nombre Then
+
+      Return t
+    Endif
+  Next
+
+  Return Null
+
+End
+
+Private Function AsignaTerreno(arriba As String, derecha As String, abajo As String, izquierda As String) As Title
+
+  'de la lista de title disponible, tiene que tener las caracteristicas compatible
+  Dim arraytitle As New Title[]
+  Dim t As Title
+  Dim SiArriba, Siabajo, Siderecha, Siizquierda As String
+  Dim numero As Integer
+
+  'condiciones que debe de cumplir las title que se coloca
+  If IsNull(arriba) Then
+    SiArriba = "*"
+  Else
+    SiArriba = buscalista(arriba).abajo
+  Endif
+
+  Siderecha = "*" '
+  Siabajo = "*" 'el lado abajo y lado derecha de la title a colocar puede ser cualquiera
+
+  '
+  If IsNull(izquierda) Then
+    Siizquierda = "*"
+  Else
+    Siizquierda = buscalista(izquierda).derecha
+  Endif
+
+  For Each t In ListaTitleDisponibles
+
+    'condicionestes.
+    If (Siarriba = "*" Or t.arriba = Siarriba) And (Siizquierda = "*" Or t.izquierda = Siizquierda) Then
+      arraytitle.Add(t)
+    Endif
+
+  Next
+
+  If arraytitle.count = 0 Then
+    Print " hay un error,no he encontrado ningula title que cumpla las condiciones"
+    Return Null
+  Else
+    'elige aleatoriamente una title de la lista que haya disponible.
+    numero = Round(Rnd(0, arraytitle.Count - 1), 0)
+    Return arraytitle[numero]
+  Endif
+
+End
